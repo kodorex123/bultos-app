@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Bultos</title>
+
+<style>
+    body{
+        font-family: Arial, sans-serif;
+        background:#f2f2f2;
+        padding:20px;
+    }
+
+    .container{
+        max-width:500px;
+        margin:auto;
+        background:white;
+        padding:25px;
+        border-radius:15px;
+        box-shadow:0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1{
+        text-align:center;
+        color:#2c3e50;
+    }
+
+    h2{
+        margin-top:25px;
+        color:#34495e;
+    }
+
+    label{
+        display:block;
+        margin-top:10px;
+        font-weight:bold;
+    }
+
+    input{
+        width:100%;
+        padding:10px;
+        margin-top:5px;
+        border-radius:8px;
+        border:1px solid #ccc;
+        box-sizing:border-box;
+    }
+
+    button{
+        width:100%;
+        padding:15px;
+        margin-top:25px;
+        background:#27ae60;
+        color:white;
+        border:none;
+        border-radius:10px;
+        font-size:18px;
+        cursor:pointer;
+    }
+
+    button:hover{
+        background:#219150;
+    }
+
+    .resultado{
+        margin-top:25px;
+        padding:15px;
+        background:#ecfdf3;
+        border-radius:10px;
+        font-size:20px;
+        text-align:center;
+        font-weight:bold;
+    }
+
+    .detalle{
+        margin-top:10px;
+        font-size:15px;
+        color:#555;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Calculadora de Bultos</h1>
+
+    <h2>Inventario Inicial</h2>
+
+    <label>Bultos Iniciales</label>
+    <input type="number" id="bultosInicio" value="0" step="1">
+
+    <label>Cubetas Iniciales</label>
+    <input type="number" id="cubetasInicio" value="0" step="0.5">
+
+    <h2>Inventario Restante</h2>
+
+    <label>Bultos Restantes</label>
+    <input type="number" id="bultosRestante" value="0" step="1">
+
+    <label>Cubetas Restantes</label>
+    <input type="number" id="cubetasRestante" value="0" step="0.5">
+
+    <button onclick="calcular()">Calcular Utilizado</button>
+
+    <div class="resultado" id="resultado">
+        Resultado aparecerá aquí
+    </div>
+
+</div>
+
+<script>
+
+function calcular(){
+
+    // Valores iniciales
+    let bInicio = parseFloat(document.getElementById("bultosInicio").value) || 0;
+    let cInicio = parseFloat(document.getElementById("cubetasInicio").value) || 0;
+
+    // Valores restantes
+    let bRest = parseFloat(document.getElementById("bultosRestante").value) || 0;
+    let cRest = parseFloat(document.getElementById("cubetasRestante").value) || 0;
+
+    // Convertir TODO a cubetas
+    let totalInicioCubetas = (bInicio * 5) + cInicio;
+    let totalRestCubetas = (bRest * 5) + cRest;
+
+    // Utilizado
+    let utilizadoCubetas = totalInicioCubetas - totalRestCubetas;
+
+    if(utilizadoCubetas < 0){
+        document.getElementById("resultado").innerHTML =
+        "Error: el restante no puede ser mayor al inicial";
+        return;
+    }
+
+    // Convertir nuevamente a bultos y cubetas
+    let bultosFinal = Math.floor(utilizadoCubetas / 5);
+    let cubetasFinal = utilizadoCubetas % 5;
+
+    document.getElementById("resultado").innerHTML = `
+        Utilizó:<br><br>
+        ${bultosFinal} bulto(s)<br>
+        ${cubetasFinal} cubeta(s)
+        <div class="detalle">
+        (${utilizadoCubetas} cubetas totales)
+        </div>
+    `;
+}
+
+</script>
+
+</body>
+</html>
